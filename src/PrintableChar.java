@@ -74,6 +74,14 @@ public class PrintableChar {
         this.style = style;
     }
 
+    public int getWidth(Graphics g) {
+        return style.getWidth(value, g);
+    }
+
+    public int getHeight(Graphics g) {
+        return style.getHeight(g);
+    }
+
     @Override
     public String toString() {
         return ("PrintableChar[" + value + "]: { x = " + x + ", y = " + y + ", style = " + style + " }");

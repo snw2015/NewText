@@ -9,10 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class FixedText extends PrintableText {
     private final String rawText;
     private String text;
+    private ArrayList<PrintableChar> chars = new ArrayList<>();
     private boolean isPrepared;
-
-    private final ArrayList<CharStyle> styles = new ArrayList<>();
-    private final ArrayList<Integer> stylePositions = new ArrayList<>();
 
     private final ArrayList<CharStyle> styleList = new ArrayList<>();
 
@@ -35,6 +33,7 @@ public class FixedText extends PrintableText {
         //TODO
         if (!isPrepared) prepare();
 
+
         return false;
     }
 
@@ -52,13 +51,20 @@ public class FixedText extends PrintableText {
         StyleInterpreter.COMMAND command = si.nextCommand();
         StringBuffer sb = new StringBuffer();
         Stack<CharStyle> styleStack = new Stack<>();
+
+        styleList.add(defaultStyle);
         styleStack.add(defaultStyle);
         CharStyle style;
+
+        int[] pos = new int[] {0, 0};
 
         while (command != StyleInterpreter.COMMAND.END) {
             switch (command) {
                 case CHARACTER:
                     sb.append(si.getCharacter());
+                    PrintableChar c = new PrintableChar(si.getCharacter(), pos[X], pos[Y], styleStack.peek());
+                    chars.add(c);
+                    pos = putNewChar(pos, c);
                     break;
                 case STYLE_START:
                     style = styleStack.peek().modifyByInfo(si.getStyleInfo());
@@ -68,15 +74,11 @@ public class FixedText extends PrintableText {
                         styleList.add(style);
                         index = styleList.size() - 1;
                     }
-                    stylePositions.add(sb.length());
-                    styles.add(styleList.get(index));
                     styleStack.push(styleList.get(index));
                     break;
                 case STYLE_END:
                     styleStack.pop();
                     style = styleStack.peek();
-                    stylePositions.add(sb.length());
-                    styles.add(style);
                     break;
             }
         }
@@ -84,6 +86,19 @@ public class FixedText extends PrintableText {
         text = sb.toString();
 
         isPrepared = true;
+    }
+
+    private int[] putNewChar(int[] pos, PrintableChar c) {
+        int rightBound = pos[X] + c.getWidth(graphics);
+        int[] newPos = new int[2];
+
+        if(rightBound >= width) {
+            newPos[X] = 0;
+            //TODO
+            newPos[Y] = pos[Y]+lineSpace;
+        }
+
+        return newPos;
     }
 
     public String getText() {
