@@ -43,13 +43,25 @@ public class CharStyle {
 
         return new int[]{width, height};
     }
-    /**
-     * @return True if changed.
-     */
-    public boolean modifyNyInfo(String info) {
-        //TODO
 
-        return true;
+    public CharStyle modifyByInfo(String info) {
+        //TODO
+        Font newFont = this.font;
+        Color newColor = this.color;
+
+        if (info.equals("b")) {
+            if (!font.isBold())
+                newFont = new Font(font.getName(), Font.BOLD, font.getSize());
+
+        } else if (info.equals("i")) {
+            if (!font.isItalic())
+                newFont = new Font(font.getName(), Font.ITALIC, font.getSize());
+        } else if (info.equals("p")) {
+            if (!font.isPlain())
+                newFont = new Font(font.getName(), Font.PLAIN, font.getSize());
+        }
+
+        return new CharStyle(newFont, newColor);
     }
 
     public int getHeight(Graphics g) {
@@ -70,5 +82,14 @@ public class CharStyle {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    public boolean equals(CharStyle other) {
+        return this.font.equals(other.font) && this.color.equals(other.color);
+    }
+
+    @Override
+    public CharStyle clone() {
+        return new CharStyle(this.font, this.color);
     }
 }

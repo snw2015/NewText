@@ -1,5 +1,3 @@
-import javafx.css.Size;
-
 import javax.naming.SizeLimitExceededException;
 import javax.swing.*;
 import java.awt.*;
@@ -273,11 +271,10 @@ public class EditableText extends PrintableText {
                 setDefaultCloseOperation(EXIT_ON_CLOSE);
                 setVisible(true);
 
-                t = new EditableText("abcde啊啊", 300,
-                        new CharStyle(new Font("Song", Font.BOLD, 20), Color.black),
+                t = new EditableText("abcde", 300,
+                        new CharStyle(new Font("Consola", Font.BOLD, 20), Color.black),
                         0, 0, getGraphics(), true, false);
                 cursor_pos = t.length();
-                t.setAsciiWidth(12);
                 t.prepareSizes();
                 setFocusTraversalKeysEnabled(false);
 
