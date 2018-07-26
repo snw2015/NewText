@@ -49,16 +49,24 @@ public class CharStyle {
         Font newFont = this.font;
         Color newColor = this.color;
 
-        if (info.equals("b")) {
+        if (info.equals("b") || info.equals("bold")) {
             if (!font.isBold())
                 newFont = new Font(font.getName(), Font.BOLD, font.getSize());
 
-        } else if (info.equals("i")) {
+        } else if (info.equals("i") || info.equals("italic")) {
             if (!font.isItalic())
                 newFont = new Font(font.getName(), Font.ITALIC, font.getSize());
-        } else if (info.equals("p")) {
+        } else if (info.equals("p") || info.equals("plain")) {
             if (!font.isPlain())
                 newFont = new Font(font.getName(), Font.PLAIN, font.getSize());
+        } else if(info.startsWith("f") || info.startsWith("font")) {
+            String fontName = info.substring(info.indexOf('[') + 1, info.indexOf(']'));
+            newFont = new Font(fontName, font.getStyle(), font.getSize());
+        } else if(info.startsWith("s") || info.startsWith("size")) {
+            int size = Integer.parseInt(info.substring(info.indexOf('[') + 1, info.indexOf(']')));
+            newFont = new Font(font.getName(), font.getStyle(), size);
+        } else if(info.startsWith("c") || info.startsWith("color")) {
+            newColor = Color.getColor(info.substring(info.indexOf('[') + 1, info.indexOf(']')));
         }
 
         return new CharStyle(newFont, newColor);

@@ -71,7 +71,7 @@ public class EditableText extends PrintableText {
         return true;
     }
 
-    private int[] nextPos(PrintableChar last, char c) {
+    public int[] nextPos(PrintableChar last, char c) {
         if (last == null) return new int[]{0, 0};
 
         int x, y;

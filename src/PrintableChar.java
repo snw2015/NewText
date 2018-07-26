@@ -15,6 +15,10 @@ public class PrintableChar {
         this.style = style;
     }
 
+    public PrintableChar(char value, CharStyle style) {
+        this(value, 0, 0, style);
+    }
+
     public PrintableChar(char value, int x, int y) {
         this(value, x, y, null);
     }
@@ -26,6 +30,7 @@ public class PrintableChar {
     public PrintableChar() {
         this((char) 0);
     }
+
 
     public void printChar(Graphics g, AffineTransform transform) {
         if (style != null) style.setFormat(g);
